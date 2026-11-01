@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="PADFORGE - virtuelles 16-Pad DJ-DrumPad mit Sample-Pack-Scanner, Audio-Licht und Pioneer DDJ-FLX4 MIDI-Support." />
+    <meta name="theme-color" content="#07080b" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23090a0e'/%3E%3Crect x='6' y='6' width='8' height='8' rx='2' fill='%23ff4d4d'/%3E%3Crect x='18' y='6' width='8' height='8' rx='2' fill='%2338e0ff'/%3E%3Crect x='6' y='18' width='8' height='8' rx='2' fill='%2352e07a'/%3E%3Crect x='18' y='18' width='8' height='8' rx='2' fill='%23b06bff'/%3E%3C/svg%3E" />
+    <title>PADFORGE — Virtuelles DJ-DrumPad</title>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <div class="brand-text">
+            <h1>PADFORGE</h1>
+            <p>Virtual DrumPad · 16 Pads · Web MIDI</p>
+          </div>
+        </div>
+
+        <div class="topbar-mid">
+          <label class="topfield">
+            <span class="topfield-label">Kit</span>
+            <span class="select-wrap">
+              <select id="kitSelect" aria-label="Sampler-Pack wählen"></select>
+            </span>
+          </label>
+
+          <div class="bpm-block">
+            <div class="bpm-readout">
+              <input id="bpmInput" type="number" min="60" max="200" step="1" value="124" aria-label="BPM" />
+              <span>BPM</span>
+            </div>
+            <button id="tapBtn" class="btn btn-ghost btn-tiny" title="Tap Tempo (T antippen)">TAP</button>
+          </div>
+
+          <label class="topfield topfield-vol">
+            <span class="topfield-label">Master</span>
+            <input id="masterVol" class="range" type="range" min="0" max="100" value="82" aria-label="Master-Lautstärke" />
+          </label>
+        </div>
+
+        <div class="topbar-right">
+          <button id="outputBtn" class="btn btn-ghost" title="Audio-Ausgabegerät wählen (z. B. DDJ-FLX4 Soundkarte)">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h3l5 4V6L7 10H4Z"/><path d="M16 9a4 4 0 0 1 0 6"/><path d="M18.5 6.5a8 8 0 0 1 0 11"/></svg>
+            <span id="outputLabel">Audio Out</span>
+          </button>
+          <button id="scanBtn" class="btn btn-accent">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+            Pack scannen
+          </button>
+          <button id="midiBadge" class="badge" type="button" title="MIDI-Geräte / Hardware-Panel">
+            <span class="dot"></span><span id="midiBadgeText">MIDI</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="workbench">
+        <section class="stage" aria-label="DrumPad">
+          <div class="stage-head">
+            <div class="stage-title">
+              <h2 id="stageKitName">Club House</h2>
+              <p id="stageKitMeta">16 Pads · Werk-Pack</p>
+            </div>
+            <div class="stage-tools">
+              <div class="seg" id="padModeFilter" role="group" aria-label="Pad-Modus">
+                <button class="seg-btn is-active" data-view="all">Pads</button>
+                <button class="seg-btn" data-view="groups">Gruppen</button>
+              </div>
+              <div class="quantize">
+                <span>Quantize</span>
+                <select id="quantizeSelect" aria-label="Quantisierung">
+                  <option value="off">Off</option>
+                  <option value="0.125">1/32</option>
+                  <option value="0.25">1/16</option>
+                  <option value="0.5" selected>1/8</option>
+                  <option value="1">1/4</option>
+                  <option value="2">1/2</option>
+                </select>
+              </div>
+              <button id="shuffleBtn" class="btn btn-ghost" title="Pads zufällig neu belegen (Beat Sync) – Ctrl+Z macht es rückgängig">Shuffle</button>
+              <button id="stopAllBtn" class="btn btn-ghost" title="Alle Pads und Decks stoppen (Esc)">Stop</button>
+            </div>
+          </div>
+
+          <div class="transport" aria-label="Performance-Steuerung">
+            <button id="profileBtn" class="transport-btn" title="Pad-Profil wechseln (P oder Hot Cue kurz drücken)">Profil 1</button>
+            <span class="transport-sep" aria-hidden="true"></span>
+            <button id="recBtn" class="transport-btn is-rec" title="Pad-Sequenz aufnehmen (Shift+Space oder Beat FX ON/OFF)">● Loop-REC</button>
+            <button id="loopBtn" class="transport-btn" title="Loop starten/stoppen (Leertaste oder Play)">▶ Loop</button>
+            <label class="transport-field">Bars
+              <select id="loopBars" aria-label="Loop-Länge in Bars">
+                <option value="1">1</option>
+                <option value="2" selected>2</option>
+                <option value="4">4</option>
+                <option value="8">8</option>
+              </select>
+            </label>
+            <button id="clearLoopBtn" class="transport-btn transport-ghost" title="Aufgenommene Sequenz löschen">Clear</button>
+            <span id="loopStatus" class="transport-status">leer</span>
+            <span class="transport-sep" aria-hidden="true"></span>
+            <button id="setRecBtn" class="transport-btn" title="Kompletten Set-Mix aufnehmen (Alt+R)">● Set REC</button>
+            <span id="setRecTime" class="transport-time">00:00</span>
+            <button id="setRecSave" class="transport-btn transport-ghost" disabled title="Letzte Set-Aufnahme erneut speichern">Speichern</button>
+            <button id="melodyBtn" class="transport-btn transport-melody" title="Zufalls-Melodie an/aus (M oder Loop In/Out)">✦ Melodie</button>
+          </div>
+
+          <div id="padGrid" class="pad-grid" role="group" aria-label="16 Drum-Pads"></div>
+
+          <div class="fx-row">
+            <span class="fx-label">Pad FX</span>
+            <div id="fxButtons" class="fx-buttons"></div>
+            <div class="fx-knob">
+              <label for="filterKnob">Filter</label>
+              <input id="filterKnob" class="range" type="range" min="0" max="100" value="100" aria-label="Master-Filter" />
+            </div>
+            <div class="fx-knob fx-knob-small">
+              <label for="reverbKnob">Reverb</label>
+              <input id="reverbKnob" class="range" type="range" min="0" max="100" value="18" aria-label="Reverb-Return" />
+            </div>
+            <div class="fx-knob fx-knob-small">
+              <label for="delayKnob">Delay</label>
+              <input id="delayKnob" class="range" type="range" min="0" max="100" value="14" aria-label="Delay-Return" />
+            </div>
+          </div>
+        </section>
+
+        <aside class="sidebar">
+          <div class="tabs" role="tablist">
+            <button class="tab is-active" data-tab="pad" role="tab">Pad-Editor</button>
+            <button class="tab" data-tab="deck" role="tab">Decks</button>
+            <button class="tab" data-tab="hw" role="tab">Hardware</button>
+          </div>
+
+          <div class="tab-pane is-active" data-pane="pad">
+            <div id="inspector" class="inspector"></div>
+          </div>
+          <div class="tab-pane" data-pane="deck">
+            <div id="decks" class="decks"></div>
+          </div>
+          <div class="tab-pane" data-pane="hw">
+            <div id="hardware" class="hardware"></div>
+          </div>
+        </aside>
+      </main>
+
+      <footer class="statusbar">
+        <div class="meter-block">
+          <span class="status-label">Out</span>
+          <div class="vu" id="masterVu"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <div class="status-text" id="statusText">Bereit · klicke ein Pad zum Starten</div>
+        <div class="status-hints">
+          <span><kbd>1</kbd>–<kbd>4</kbd>/<kbd>Q</kbd>…</span>
+          <span><kbd>Space</kbd> Loop · <kbd>Shift</kbd>+<kbd>Space</kbd> REC</span>
+          <span><kbd>P</kbd> Profil · <kbd>M</kbd> Melodie · <kbd>Alt</kbd>+<kbd>R</kbd> Set · <kbd>Ctrl</kbd>+<kbd>Z</kbd> Undo</span>
+        </div>
+      </footer>
+    </div>
+
+    <div id="toasts" class="toasts" aria-live="polite"></div>
+
+    <dialog id="scanDialog" class="modal">
+      <form method="dialog" class="modal-inner">
+        <header class="modal-head">
+          <div>
+            <h2>Sample-Pack Scanner</h2>
+            <p>Ordner wählen — Sounds werden nach Funktion erkannt und gruppiert.</p>
+          </div>
+          <button class="icon-btn" value="cancel" aria-label="Schließen">✕</button>
+        </header>
+        <div id="scanBody" class="modal-body">
+          <label id="dropzone" class="dropzone">
+            <input id="folderInput" type="file" webkitdirectory multiple hidden />
+            <span class="dropzone-icon">⌁</span>
+            <strong>Ordner hierher ziehen</strong>
+            <span>oder klicken · .wav .aif .mp3 .ogg .flac .m4a</span>
+          </label>
+          <div id="scanResult" class="scan-result"></div>
+        </div>
+        <footer class="modal-foot">
+          <span id="scanSummary" class="scan-summary"></span>
+          <div class="modal-actions">
+            <button class="btn btn-ghost" value="cancel">Abbrechen</button>
+            <button id="applyScanBtn" class="btn btn-accent" disabled>Kit übernehmen</button>
+          </div>
+        </footer>
+      </form>
+    </dialog>
+
+    <dialog id="outputDialog" class="modal modal-sm">
+      <form method="dialog" class="modal-inner">
+        <header class="modal-head">
+          <div>
+            <h2>Audio-Ausgang</h2>
+            <p>Route den Sound direkt auf die DDJ-FLX4 Soundkarte.</p>
+          </div>
+          <button class="icon-btn" value="cancel" aria-label="Schließen">✕</button>
+        </header>
+        <div class="modal-body">
+          <select id="outputSelect" class="select-full" aria-label="Audio-Ausgabegerät"></select>
+          <p class="hint" id="outputHint"></p>
+        </div>
+        <footer class="modal-foot">
+          <div class="modal-actions">
+            <button class="btn btn-ghost" value="cancel">Schließen</button>
+            <button id="outputApply" class="btn btn-accent" value="cancel">Übernehmen</button>
+          </div>
+        </footer>
+      </form>
+    </dialog>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,53 @@
+# Maintainer: PADFORGE <noreply@localhost>
+pkgname=padforge
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="Virtuelles 16-Pad-DJ-DrumPad mit Sample-Pack-Scanner und Pioneer DDJ-FLX4 MIDI-Support"
+arch=('any')
+license=('MIT')
+depends=('electron' 'python' 'xdg-utils')
+makedepends=('nodejs' 'npm')
+install=padforge.install
+backup=('etc/conf.d/padforge')
+options=(!strip)
+source=()
+sha256sums=()
+
+_pkgdir="${startdir}"
+_root="$(cd "${startdir}/../.." && pwd)"
+
+build() {
+  msg2 "Kopiere Projektquellen nach ${srcdir}"
+  mkdir -p "${srcdir}/padforge"
+  (
+    cd "${_root}" || exit 1
+    tar -cf - \
+      --exclude=./node_modules \
+      --exclude=./dist \
+      --exclude=./.git \
+      --exclude=./.dev-server.log \
+      --exclude=./packaging \
+      .
+  ) | tar -xf - -C "${srcdir}/padforge"
+
+  cd "${srcdir}/padforge" || exit 1
+  npm ci --no-audit --no-fund
+  npm run build
+}
+
+package() {
+  install -d "${pkgdir}/usr/share/padforge"
+  cp -a "${srcdir}/padforge/dist/." "${pkgdir}/usr/share/padforge/"
+
+  install -Dm644 "${_root}/desktop/main.cjs" "${pkgdir}/usr/share/padforge/main.cjs"
+  install -Dm644 "${_pkgdir}/padforge-electron.json" "${pkgdir}/usr/share/padforge/package.json"
+  install -Dm755 "${_pkgdir}/padforge-server.py" "${pkgdir}/usr/share/padforge/server.py"
+  install -Dm755 "${_pkgdir}/padforge.sh" "${pkgdir}/usr/bin/padforge"
+  install -Dm755 "${_pkgdir}/padforge-browser.sh" "${pkgdir}/usr/bin/padforge-browser"
+  install -Dm755 "${_pkgdir}/padforge.initd" "${pkgdir}/etc/init.d/padforge"
+  install -Dm644 "${_pkgdir}/padforge.confd" "${pkgdir}/etc/conf.d/padforge"
+  install -Dm644 "${_pkgdir}/padforge.desktop" "${pkgdir}/usr/share/applications/padforge.desktop"
+  install -Dm644 "${_pkgdir}/padforge.svg" "${pkgdir}/usr/share/icons/hicolor/scalable/apps/padforge.svg"
+  install -Dm644 "${_root}/README.md" "${pkgdir}/usr/share/doc/${pkgname}/README.md"
+  install -Dm644 "${_root}/LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}

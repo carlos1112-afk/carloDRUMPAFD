@@ -1,0 +1,33 @@
+post_install() {
+  cat <<'EOF'
+PADFORGE installiert.
+
+Desktop-GUI starten (Electron-Fenster, empfohlen):
+  padforge
+
+Im Browser starten (Fallback, benötigt Chrome/Edge/Opera):
+  padforge-browser
+
+Optional: lokaler Server als OpenRC-Dienst (Port 8787):
+  rc-update add padforge default
+  rc-service padforge start
+  # → http://127.0.0.1:8787/
+
+Hinweis: Web MIDI ist nur in Chromium-basierten Browsern und nur in einem
+sicheren Kontext verfügbar. Die GUI erfüllt das über das interne Protokoll,
+der Browser über 127.0.0.1/localhost.
+EOF
+}
+
+post_upgrade() {
+  post_install
+}
+
+pre_remove() {
+  if command -v rc-service >/dev/null 2>&1; then
+    rc-service padforge stop 2>/dev/null || true
+  fi
+  if command -v rc-update >/dev/null 2>&1; then
+    rc-update del padforge default 2>/dev/null || true
+  fi
+}

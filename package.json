@@ -1,0 +1,19 @@
+{
+  "name": "padforge",
+  "private": true,
+  "version": "1.0.0",
+  "description": "PADFORGE - virtuelles DJ-DrumPad mit Pioneer DDJ-FLX4 Hardware-Support",
+  "type": "module",
+  "main": "desktop/main.cjs",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "typecheck": "tsc --noEmit",
+    "desktop": "electron ."
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2",
+    "vite": "^7.1.3"
+  }
+}

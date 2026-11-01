@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=PADFORGE
+GenericName=Virtuelles DJ-DrumPad
+Comment=16-Pad-DrumPad mit Sample-Pack-Scanner und DDJ-FLX4-Unterstützung
+Exec=padforge
+Icon=padforge
+StartupWMClass=padforge
+Terminal=false
+Categories=AudioVideo;Audio;
+Keywords=drum;pad;dj;midi;sampler;pioneer;flx4;
+StartupNotify=false

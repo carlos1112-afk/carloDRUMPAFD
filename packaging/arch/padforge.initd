@@ -1,0 +1,33 @@
+#!/sbin/openrc-run
+# OpenRC-Dienst für PADFORGE (Arch Linux / Artix Linux)
+#
+#   rc-service padforge start
+#   rc-update add padforge default
+#
+# Der Dienst lauscht nur auf 127.0.0.1 – Web MIDI braucht lokalhost/https.
+
+name="PADFORGE"
+description="PADFORGE – virtuelles DJ-DrumPad (lokaler Webserver)"
+
+: "${PADFORGE_PORT:=8787}"
+: "${PADFORGE_HOST:=127.0.0.1}"
+
+command="/usr/bin/python3"
+command_args="/usr/share/padforge/server.py --host ${PADFORGE_HOST} --port ${PADFORGE_PORT}"
+command_background="yes"
+pidfile="/run/${RC_SVCNAME}.pid"
+command_user="nobody:nobody"
+output_log="/var/log/padforge.log"
+error_log="/var/log/padforge.err"
+
+depend() {
+    need localmount
+    after net
+}
+
+start_pre() {
+    # Erst hier auswerten, damit /etc/conf.d/padforge die Werte überschreiben kann
+    command_args="/usr/share/padforge/server.py --host ${PADFORGE_HOST} --port ${PADFORGE_PORT}"
+    checkpath --file --owner nobody --group nobody --mode 0644 "${output_log}"
+    checkpath --file --owner nobody --group nobody --mode 0644 "${error_log}"
+}

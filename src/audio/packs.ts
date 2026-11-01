@@ -1,0 +1,136 @@
+import type { PackDef } from '../types';
+
+/* ------------------------------------------------------------------
+ * Die fünf vorinstallierten Sampler-Packs.
+ * Jedes Pack belegt alle 16 Pads, jede Pad-Definition ist danach
+ * vollständig frei editierbar (Sound, Modus, Choke, Pitch, FX …).
+ * ------------------------------------------------------------------ */
+
+export const PACKS: PackDef[] = [
+  {
+    id: 'house',
+    name: 'Club House',
+    tagline: '124 BPM · Garage / House Starter',
+    bpm: 124,
+    pads: [
+      { name: 'Kick Punch', group: 'kick', recipe: 'kick', choke: 1 },
+      { name: 'Kick Deep', group: 'kick', recipe: 'kickSoft', choke: 1 },
+      { name: 'Snare', group: 'snare', recipe: 'snare', mode: 'oneshot' },
+      { name: 'Clap', group: 'perc', recipe: 'clap' },
+      { name: 'Hat Closed', group: 'hat', recipe: 'hatClosed', choke: 2 },
+      { name: 'Hat Open', group: 'hat', recipe: 'hatOpen', choke: 2 },
+      { name: 'Shaker', group: 'perc', recipe: 'shaker' },
+      { name: 'Rimshot', group: 'perc', recipe: 'rim' },
+      { name: 'Conga Hi', group: 'perc', recipe: 'congaHi' },
+      { name: 'Conga Lo', group: 'perc', recipe: 'congaLo' },
+      { name: 'Bass Stab', group: 'bass', recipe: 'bassShort', params: { freq: 55 } },
+      { name: 'Vox Chop', group: 'vocal', recipe: 'voxChop' },
+      { name: 'Chord Stab', group: 'tonal', recipe: 'stab', params: { freq: 220 } },
+      { name: 'Riser', group: 'fx', recipe: 'riser', mode: 'gate' },
+      { name: 'Zap', group: 'fx', recipe: 'zap' },
+      { name: 'Top Loop', group: 'loop', recipe: 'loopTop', mode: 'loop', sync: true },
+    ],
+  },
+  {
+    id: 'techno',
+    name: 'Techno Bunker',
+    tagline: '132 BPM · Warehouse / Peak Time',
+    bpm: 132,
+    pads: [
+      { name: 'Kick Hard', group: 'kick', recipe: 'kick', params: { click: 0.9, drive: 1.4, f0: 200 }, choke: 1 },
+      { name: 'Kick Sub', group: 'kick', recipe: 'kickSub', choke: 1 },
+      { name: 'Hat Closed', group: 'hat', recipe: 'hatClosed', choke: 2 },
+      { name: 'Hat Open', group: 'hat', recipe: 'hatOpen', choke: 2 },
+      { name: 'Clap', group: 'perc', recipe: 'clap', params: { bright: 1400 } },
+      { name: 'Snare Tight', group: 'snare', recipe: 'snareTight' },
+      { name: 'Ride', group: 'perc', recipe: 'ride' },
+      { name: 'Tom Low', group: 'perc', recipe: 'tomLow' },
+      { name: 'Metallic', group: 'perc', recipe: 'metallic' },
+      { name: 'Bleep', group: 'tonal', recipe: 'bleep' },
+      { name: 'Siren', group: 'fx', recipe: 'siren', mode: 'gate' },
+      { name: 'Laser', group: 'fx', recipe: 'laser' },
+      { name: 'Impact', group: 'fx', recipe: 'impact' },
+      { name: 'Noise Sweep', group: 'fx', recipe: 'noiseHit', mode: 'gate' },
+      { name: 'Hat Loop', group: 'loop', recipe: 'loopHats', mode: 'loop' },
+      { name: 'Perc Loop', group: 'loop', recipe: 'loopPerc', mode: 'loop' },
+    ],
+  },
+  {
+    id: 'boombap',
+    name: 'Boom Bap Dust',
+    tagline: '90 BPM · Hip-Hop / Vinyl Flavour',
+    bpm: 90,
+    pads: [
+      { name: 'Boom Kick', group: 'kick', recipe: 'kickBoom', choke: 1 },
+      { name: 'Kick Soft', group: 'kick', recipe: 'kickSoft', choke: 1 },
+      { name: 'Snare Dust', group: 'snare', recipe: 'snare', params: { tone: 175, dur: 0.28 } },
+      { name: 'Rimshot', group: 'perc', recipe: 'rim' },
+      { name: 'Hat Closed', group: 'hat', recipe: 'hatClosed', choke: 2 },
+      { name: 'Hat Open', group: 'hat', recipe: 'hatOpen', choke: 2 },
+      { name: 'Tambourine', group: 'perc', recipe: 'tambourine' },
+      { name: 'Shaker', group: 'perc', recipe: 'shaker' },
+      { name: 'Vox Chop', group: 'vocal', recipe: 'voxChop', params: { freq: 196 } },
+      { name: 'Scratch', group: 'vocal', recipe: 'scratch' },
+      { name: 'Vinyl Stop', group: 'fx', recipe: 'vinylStop' },
+      { name: 'Bass 808', group: 'bass', recipe: 'bass808', params: { freq: 49 } },
+      { name: 'Brass Stab', group: 'tonal', recipe: 'brass' },
+      { name: 'Sub Drop', group: 'fx', recipe: 'subDrop' },
+      { name: 'Break Loop', group: 'loop', recipe: 'loopBreak', mode: 'loop' },
+      { name: 'Shaker Loop', group: 'loop', recipe: 'loopConga', mode: 'loop' },
+    ],
+  },
+  {
+    id: 'trap',
+    name: 'Trap Pressure',
+    tagline: '140 BPM · 808 / Half Time',
+    bpm: 140,
+    pads: [
+      { name: '808 Long', group: 'bass', recipe: 'bass808', params: { freq: 55 }, mode: 'oneshot' },
+      { name: 'Kick Trap', group: 'kick', recipe: 'kickTrap', choke: 1 },
+      { name: 'Snare', group: 'snare', recipe: 'snare', params: { tone: 210 } },
+      { name: 'Clap', group: 'perc', recipe: 'clap', params: { bright: 1600 } },
+      { name: 'Hat Closed', group: 'hat', recipe: 'hatClosed', choke: 2 },
+      { name: 'Hat Open', group: 'hat', recipe: 'hatOpen', choke: 2 },
+      { name: 'Perc Hi', group: 'perc', recipe: 'bongoHi' },
+      { name: 'Bell', group: 'tonal', recipe: 'bell', params: { freq: 1046 } },
+      { name: 'Pluck', group: 'tonal', recipe: 'pluck', params: { freq: 523 } },
+      { name: 'Vox Hey', group: 'vocal', recipe: 'voxHey' },
+      { name: 'Riser', group: 'fx', recipe: 'riser', mode: 'gate' },
+      { name: 'Downlifter', group: 'fx', recipe: 'downlifter' },
+      { name: 'Sub Drop', group: 'fx', recipe: 'subDrop' },
+      { name: 'Kick 808 Lay', group: 'kick', recipe: 'kick', params: { click: 0.2, f1: 40 }, choke: 3 },
+      { name: 'Hat Loop', group: 'loop', recipe: 'loopHats', mode: 'loop' },
+      { name: '808 Loop', group: 'loop', recipe: 'loop808', mode: 'loop' },
+    ],
+  },
+  {
+    id: 'latin',
+    name: 'Latin Afro',
+    tagline: '108 BPM · Percussion Toolkit',
+    bpm: 108,
+    pads: [
+      { name: 'Conga Hi', group: 'perc', recipe: 'congaHi' },
+      { name: 'Conga Lo', group: 'perc', recipe: 'congaLo' },
+      { name: 'Bongo Hi', group: 'perc', recipe: 'bongoHi' },
+      { name: 'Bongo Lo', group: 'perc', recipe: 'bongoLo' },
+      { name: 'Timbale', group: 'perc', recipe: 'timbale' },
+      { name: 'Cowbell', group: 'perc', recipe: 'cowbell' },
+      { name: 'Claves', group: 'perc', recipe: 'claves' },
+      { name: 'Guiro', group: 'perc', recipe: 'guiro' },
+      { name: 'Shaker', group: 'perc', recipe: 'shaker' },
+      { name: 'Agogo', group: 'perc', recipe: 'agogo' },
+      { name: 'Djembe', group: 'perc', recipe: 'djembe' },
+      { name: 'Cajon', group: 'perc', recipe: 'cajon' },
+      { name: 'Clap', group: 'snare', recipe: 'clap', params: { bright: 1300 } },
+      { name: 'Vox Hey', group: 'vocal', recipe: 'voxHey' },
+      { name: 'Perc Loop', group: 'loop', recipe: 'loopConga', mode: 'loop' },
+      { name: 'Riser', group: 'fx', recipe: 'riser', mode: 'gate' },
+    ],
+  },
+];
+
+export const DEFAULT_PACK = PACKS[0];
+
+export function getPack(id: string): PackDef | undefined {
+  return PACKS.find((p) => p.id === id);
+}

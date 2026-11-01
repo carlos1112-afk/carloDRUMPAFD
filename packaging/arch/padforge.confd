@@ -1,0 +1,6 @@
+# /etc/conf.d/padforge – Konfiguration des OpenRC-Dienstes
+#
+# Der Dienst lauscht ausschließlich lokal; Web MIDI benötigt einen sicheren
+# Kontext (127.0.0.1/localhost).
+PADFORGE_HOST="127.0.0.1"
+PADFORGE_PORT="8787"

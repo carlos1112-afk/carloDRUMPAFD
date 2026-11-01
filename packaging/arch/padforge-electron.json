@@ -1,0 +1,10 @@
+{
+  "name": "padforge",
+  "productName": "PADFORGE",
+  "version": "1.0.0",
+  "description": "Virtuelles 16-Pad-DJ-DrumPad mit DDJ-FLX4 MIDI-Support",
+  "main": "main.cjs",
+  "type": "commonjs",
+  "author": "PADFORGE",
+  "license": "MIT"
+}
